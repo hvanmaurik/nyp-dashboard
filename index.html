@@ -1,323 +1,352 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>New York Pizza - KPI Upload</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      background: #2c2c2c;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      color: #ffffff;
-      min-height: 100vh;
-      padding: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    
-    .container {
-      width: 100%;
-      max-width: 420px;
-      background: #2c2c2c;
-      text-align: center;
-    }
-    
-    .header {
-      background: #009647;
-      border-radius: 20px;
-      padding: 30px 25px;
-      text-align: center;
-      margin-bottom: 30px;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .logo {
-      width: 200px;
-      height: 60px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      z-index: 2;
-    }
-    
-    .logo img {
-      width: 100%;
-      height: auto;
-      max-height: 100%;
-      object-fit: contain;
-    }
-    
-    .loading-section {
-      background: #404040;
-      border-radius: 20px;
-      padding: 40px 20px;
-      margin-bottom: 30px;
-      position: relative;
-    }
-    
-    .pizza-loader {
-      margin-bottom: 30px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 200px;
-    }
-    
-    .pizza-animation {
-      width: 120px;
-      height: 120px;
-      background: linear-gradient(135deg, #22a049 0%, #1a7a3e 100%);
-      border-radius: 20px;
-      position: relative;
-      animation: float 3s ease-in-out infinite;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 10px 30px rgba(34, 160, 73, 0.3);
-      transform-style: preserve-3d;
-    }
-    
-    .pizza-animation::before {
-      content: '🛵';
-      font-size: 45px;
-      animation: pulse-icon 2s ease-in-out infinite;
-      filter: drop-shadow(0 5px 10px rgba(0,0,0,0.3));
-    }
-    
-    .pizza-animation::after {
-      content: '';
-      position: absolute;
-      top: -5px;
-      left: -5px;
-      right: -5px;
-      bottom: -5px;
-      background: linear-gradient(45deg, #22a049, #1a7a3e, #22a049, #1a7a3e);
-      border-radius: 25px;
-      z-index: -1;
-      animation: rotate-border 4s linear infinite;
-    }
-    
-    @keyframes float {
-      0%, 100% { transform: translateY(0px) rotateX(0deg); }
-      50% { transform: translateY(-15px) rotateX(10deg); }
-    }
-    
-    @keyframes pulse-icon {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-    }
-    
-    @keyframes rotate-border {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    
-    .loading-dots {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 20px 0;
-    }
-    
-    .dot {
-      width: 12px;
-      height: 12px;
-      background: #009647;
-      border-radius: 50%;
-      margin: 0 5px;
-      animation: pulse 1.5s infinite ease-in-out;
-    }
-    
-    .dot:nth-child(2) {
-      animation-delay: 0.3s;
-    }
-    
-    .dot:nth-child(3) {
-      animation-delay: 0.6s;
-    }
-    
-    @keyframes pulse {
-      0%, 80%, 100% {
-        transform: scale(0.8);
-        opacity: 0.5;
-      }
-      40% {
-        transform: scale(1.2);
-        opacity: 1;
-      }
-    }
-    
-    .status-card {
-      background: #009647;
-      border-radius: 16px;
-      padding: 25px;
-      margin-bottom: 20px;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .status-card::before {
-      content: '';
-      position: absolute;
-      top: -2px;
-      left: -2px;
-      right: -2px;
-      bottom: -2px;
-      background: linear-gradient(45deg, #009647, #007a39, #009647);
-      border-radius: 18px;
-      z-index: -1;
-      animation: border-glow 2s linear infinite;
-    }
-    
-    @keyframes border-glow {
-      0% { filter: hue-rotate(0deg); }
-      100% { filter: hue-rotate(360deg); }
-    }
-    
-    .status-title {
-      font-size: 24px;
-      font-weight: bold;
-      margin-bottom: 10px;
-      position: relative;
-      z-index: 2;
-    }
-    
-    .status-text {
-      font-size: 16px;
-      line-height: 1.5;
-      position: relative;
-      z-index: 2;
-    }
-    
-    .progress-bar {
-      width: 100%;
-      height: 6px;
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 10px;
-      margin-top: 20px;
-      overflow: hidden;
-      position: relative;
-      z-index: 2;
-    }
-    
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #ffffff, rgba(255, 255, 255, 0.8));
-      border-radius: 10px;
-      animation: progress 12s linear infinite;
-    }
-    
-    @keyframes progress {
-      0% { width: 0%; }
-      100% { width: 100%; }
-    }
-    
-    .timer {
-      background: #404040;
-      border-radius: 12px;
-      padding: 15px;
-      margin-top: 20px;
-      font-size: 18px;
-      font-weight: bold;
-      color: #4ade80;
-    }
-    
-    .timer-text {
-      font-size: 14px;
-      color: #ccc;
-      margin-top: 5px;
-    }
-    
-    .footer {
-      text-align: center;
-      margin-top: 30px;
-    }
-    
-    .footer-text {
-      font-size: 14px;
-      color: #888;
-      margin-bottom: 10px;
-    }
-    
-    .tagline {
-      font-size: 16px;
-      color: #009647;
-      font-weight: bold;
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>New York Pizza – KPI Upload | Verwerken</title>
+    <meta name="description" content="New York Pizza KPI-upload wordt verwerkt. Even geduld: voortgang 20 seconden." />
+    <link rel="canonical" href="https://dagscore.nypdenhaag.nl/wachten" />
+    <style>
+        :root {
+            --bg: #0f1115;
+            --panel: #181c24;
+            --panel-2: #1f2430;
+            --text: #e6e8eb;
+            --muted: #a6acb3;
+            --brand: #009647;
+            --brand-600: #068a45;
+            --brand-700: #03723a;
+            --success: #4ade80;
+            --duration: 20s; /* voortgangsbalkduur */
+            --radius: 20px;
+            --shadow: 0 12px 30px rgba(0, 0, 0, .35);
+            --ring: 0 0 0 3px rgba(0, 150, 71, .25);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, system-ui, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(1200px 600px at 10% -10%, rgba(0, 150, 71, .12), transparent 60%),
+                radial-gradient(800px 500px at 110% 10%, rgba(0, 150, 71, .08), transparent 60%),
+                var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        header, main, footer {
+            display: block;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 520px;
+        }
+
+        .card {
+            background: linear-gradient(180deg, var(--panel), var(--panel-2));
+            border-radius: calc(var(--radius) + 4px);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, .06);
+            overflow: hidden;
+        }
+
+        /* Header */
+        .hero {
+            position: relative;
+            padding: 28px 24px;
+            background:
+                radial-gradient(100% 120% at 0% 0%, rgba(0, 150, 71, .18), transparent 60%),
+                linear-gradient(135deg, var(--brand), var(--brand-700));
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .brand img {
+            height: 56px;
+            width: auto;
+            display: block;
+            object-fit: contain;
+        }
+
+        .brand h1 {
+            font-size: 22px;
+            letter-spacing: .2px;
+            line-height: 1.2;
+            font-weight: 800;
+        }
+
+        .brand h1 span {
+            opacity: .9;
+            font-weight: 600;
+            font-size: 14px;
+            display: block;
+        }
+
+        /* Loader section */
+        .section {
+            padding: 28px 24px 8px;
+        }
+
+        .loader {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin: 8px 0 20px;
+        }
+
+        .spinner {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, .06), rgba(255, 255, 255, .02));
+            border: 1px solid rgba(255, 255, 255, .06);
+            display: grid;
+            place-items: center;
+            position: relative;
+            isolation: isolate;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06), 0 10px 20px rgba(0, 0, 0, .35);
+        }
+
+        .spinner::before {
+            content: "";
+            position: absolute;
+            inset: -2px;
+            border-radius: 18px;
+            background: conic-gradient(from 0deg, rgba(0, 150, 71, .0), rgba(0, 150, 71, .7), rgba(0, 150, 71, .0));
+            filter: blur(6px);
+            z-index: -1;
+            animation: spin 1.2s linear infinite;
+        }
+
+        .spinner i {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, .08);
+            border-top-color: #fff;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .status {
+            text-align: center;
+            margin-top: 6px;
+        }
+
+        .status h2 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            letter-spacing: .2px;
+        }
+
+        .status p {
+            font-size: 15px;
+            color: var(--muted);
+        }
+
+        /* Progress */
+        .progress {
+            margin-top: 18px;
+            background: rgba(255, 255, 255, .08);
+            height: 10px;
+            border-radius: 999px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress__fill {
+            width: 0;
+            height: 100%;
+            background: linear-gradient(90deg, #ffffff, rgba(255, 255, 255, .85), #ffffff);
+            box-shadow: inset 0 0 10px rgba(255, 255, 255, .35);
+            animation: fill var(--duration) linear forwards;
+            transform: translateZ(0);
+        }
+
+        @keyframes fill {
+            from {
+                width: 0%;
+            }
+            to {
+                width: 100%;
+            }
+        }
+
+        /* Timer */
+        .timer {
+            margin: 18px auto 8px;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 12px;
+            align-items: center;
+            background: rgba(255, 255, 255, .04);
+            border: 1px solid rgba(255, 255, 255, .06);
+            padding: 14px 16px;
+            border-radius: 14px;
+            max-width: 360px;
+        }
+
+        .timer .bubble {
+            background: linear-gradient(135deg, rgba(0, 150, 71, .25), rgba(0, 150, 71, .15));
+            border: 1px solid rgba(0, 150, 71, .45);
+            color: var(--success);
+            padding: 8px 14px;
+            border-radius: 12px;
+            font-weight: 800;
+            letter-spacing: .5px;
+            min-width: 64px;
+            text-align: center;
+        }
+
+        .timer .text {
+            font-size: 14px;
+            color: var(--muted);
+            line-height: 1.3;
+        }
+
+        /* Footer */
+        footer {
+            padding: 18px 24px 22px;
+            text-align: center;
+            color: var(--muted);
+        }
+
+        .tagline {
+            margin-top: 6px;
+            color: var(--brand);
+            font-weight: 700;
+        }
+
+        /* Focus styles */
+        a, button {
+            outline: none;
+        }
+
+        a:focus-visible, button:focus-visible, .timer:focus-visible {
+            box-shadow: var(--ring);
+            border-radius: 12px;
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            .spinner::before, .spinner i, .progress__fill {
+                animation: none;
+            }
+            .progress__fill {
+                width: 100%;
+            }
+        }
+
+        /* Small screens */
+        @media (max-width: 420px) {
+            .brand h1 {
+                font-size: 18px;
+            }
+            .brand img {
+                height: 48px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <div class="logo">
-        <img src="NYPlogo.png" alt="New York Pizza Logo" />
-      </div>
+    <div class="container">
+        <article class="card" aria-labelledby="page-title">
+            <header class="hero">
+                <div class="brand">
+                    <img src="NYPlogo.png" alt="New York Pizza logo" loading="lazy" />
+                    <h1 id="page-title">
+                        KPI Upload
+                        <span>Bezig met verwerken</span>
+                    </h1>
+                </div>
+            </header>
+
+            <main class="section">
+                <div class="loader" aria-hidden="true">
+                    <div class="spinner" aria-hidden="true">
+                        <i aria-hidden="true"></i>
+                    </div>
+                </div>
+
+                <div class="status" aria-live="polite">
+                    <h2>DASHBOARD ANALYSE</h2>
+                    <p>Je KPI's worden verwerkt... Even geduld aub.</p>
+
+                    <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                        <div class="progress__fill"></div>
+                    </div>
+
+                    <div class="timer" tabindex="0" aria-describedby="timer-desc">
+                        <div class="bubble" id="countdown">20s</div>
+                        <div class="text" id="timer-desc">Seconden resterend</div>
+                    </div>
+                </div>
+            </main>
+
+            <footer>
+                <div>Optimaliseren van jouw resultaten...</div>
+                <div class="tagline">It's the dough! Our dough, our secret.</div>
+            </footer>
+        </article>
     </div>
 
-    <div class="loading-section">
-      <div class="pizza-loader">
-        <div class="pizza-animation"></div>
-      </div>
-      
-      <div class="loading-dots">
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-      </div>
-    </div>
+    <script>
+        (function() {
+            const DURATION_SEC = 20; // exact 20 seconden
+            const countdownEl = document.getElementById('countdown');
+            const progressEl = document.querySelector('.progress');
+            const progressbar = progressEl;
+            const progressFill = document.querySelector('.progress__fill');
+            const timerText = document.getElementById('timer-desc');
 
-    <div class="status-card">
-      <div class="status-title">DASHBOARD ANALYSE</div>
-      <div class="status-text">
-        Je KPI's worden verwerkt....<br>
-        Even geduld aub
-      </div>
-      <div class="progress-bar">
-        <div class="progress-fill"></div>
-      </div>
-    </div>
+            let remaining = DURATION_SEC;
+            countdownEl.textContent = remaining + 's';
+            progressbar.setAttribute('aria-valuenow', '0');
 
-    <div class="timer">
-      <div id="countdown">20</div>
-      <div class="timer-text">seconden resterend</div>
-    </div>
+            const interval = setInterval(() => {
+                remaining--;
+                if (remaining >= 0) {
+                    countdownEl.textContent = remaining + 's';
+                    const percent = Math.min(100, Math.round(((DURATION_SEC - remaining) / DURATION_SEC) * 100));
+                    progressbar.setAttribute('aria-valuenow', String(percent));
+                }
 
-    <div class="footer">
-      <div class="footer-text">Optimaliseren van jouw resultaten...</div>
-      <div class="tagline">It's the dough! Our dough, our secret.</div>
-    </div>
-  </div>
+                if (remaining <= 0) {
+                    clearInterval(interval);
+                    countdownEl.textContent = 'Klaar!';
+                    timerText.textContent = 'Analyse voltooid';
+                    setTimeout(() => window.location.href = 'https://dagscore.nypdenhaag.nl', 1000);
+                }
+            }, 1000);
 
-  <script>
-    // Countdown timer
-    let timeLeft = 20;
-    const countdownElement = document.getElementById('countdown');
-    
-    const timer = setInterval(() => {
-      timeLeft--;
-      countdownElement.textContent = timeLeft;
-      
-      if (timeLeft <= 0) {
-        clearInterval(timer);
-        countdownElement.textContent = 'Klaar!';
-        document.querySelector('.timer-text').textContent = 'Analyse voltooid';
-        
-        // Redirect naar je N8N GET webhook na 1 seconde
-        setTimeout(() => {
-          window.location.href = 'https://dagscore.nypdenhaag.nl';
-        }, 1000);
-      }
-    }, 1000);
-  </script>
+            // Zorg dat CSS-animatie exact DURATION_SEC duurt
+            progressFill.style.animationDuration = DURATION_SEC + 's';
+        })();
+    </script>
 </body>
 </html>
